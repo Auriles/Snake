@@ -39,14 +39,17 @@ document.onkeydown = function handleKeyDown(e) {
   snakeGame.snake.setDirection(newDirection);
 }
 
-// Constructeur snakeGame
+// Constructeur SnakeGame
 function SnakeGame(canvasWidth, canvasHeight, blockSize, delay) {
 
   // Propriétés du constructeur SnakeGame
   this.canvas = document.createElement("canvas");
   this.canvas.width = canvasWidth;
   this.canvas.height = canvasHeight;
-  this.canvas.style.border = "1px solid";
+  this.canvas.style.border = "30px solid gray";
+  this.canvas.style.margin = "20px auto";
+  this.canvas.style.display = "block";
+  this.canvas.style.backgroundColor = "#ddd";
   document.body.appendChild(this.canvas);
   this.ctx = this.canvas.getContext("2d");
   this.blockSize = blockSize;
@@ -84,9 +87,9 @@ function SnakeGame(canvasWidth, canvasHeight, blockSize, delay) {
         } while(instance.apple.isOnSnake(instance.snake))
       }
       instance.ctx.clearRect(0, 0, instance.canvas.width, instance.canvas.height);
+      instance.drawScore();
       instance.snake.draw(instance.ctx, instance.blockSize);
       instance.apple.draw(instance.ctx, instance.blockSize);
-      instance.drawScore();
       timeout = setTimeout(refreshCanvas, delay);
     }
   }
@@ -121,15 +124,34 @@ function SnakeGame(canvasWidth, canvasHeight, blockSize, delay) {
   // Méthode gameOver
   this.gameOver = function() {
     this.ctx.save();
-    this.ctx.fillText("Game Over", 5, 15);
-    this.ctx.fillText("Appuyez sur la touche espace pour rejouer", 5, 30);
+
+    this.ctx.font = "bold 70px sans-serif";
+    this.ctx.fillStyle = "black";
+    this.ctx.textAlign = "center";
+    this.ctx.textBaseline = "middle";
+    this.ctx.strokeStyle = "white";
+    this.ctx.lineWidth = 5;
+    var centreX = this.canvas.width / 2;
+    var centreY = this.canvas.height / 2;
+    this.ctx.strokeText("Game Over", centreX, centreY - 180);
+    this.ctx.fillText("Game Over", centreX, centreY - 180);
+    this.ctx.font = "bold 30px sans-serif";
+    this.ctx.strokeText("Appuyez sur la touche espace pour rejouer", centreX, centreY - 120);
+    this.ctx.fillText("Appuyez sur la touche espace pour rejouer", centreX, centreY - 120);
+
     this.ctx.restore();
   };
 
   // Méthode drawScore
   this.drawScore = function() {
     this.ctx.save();
-    this.ctx.fillText(this.score.toString(), 5, this.canvas.height - 5);
+    this.ctx.font = "bold 200px sans-serif";
+    this.ctx.fillStyle = "gray";
+    this.ctx.textAlign = "center";
+    this.ctx.textBaseline = "middle";
+    var centreX = this.canvas.width / 2;
+    var centreY = this.canvas.height / 2;
+    this.ctx.fillText(this.score.toString(), centreX, centreY);
     this.ctx.restore();
   };
 
